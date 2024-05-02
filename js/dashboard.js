@@ -1,3 +1,6 @@
+import { User } from "./models/user.js";
+import { List } from "./modules/list.js";
+
 document.addEventListener("DOMContentLoaded", function() {
     checkIfLoggedInAndRedirect();
     displayUserLists();
@@ -7,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function checkIfLoggedInAndRedirect() {
-    var user = localStorage.getItem("user");
+    const user = new User(JSON.parse(localStorage.getItem("user")));
     if (!user) {
         redirectToLoginPage();
     } else {
@@ -16,13 +19,13 @@ function checkIfLoggedInAndRedirect() {
 }
 
 function displayUserName() {
-    var user = JSON.parse(localStorage.getItem("user"));
+    const user = new User(JSON.parse(localStorage.getItem("user")));
     document.getElementById("userName").textContent = user.name;
 }
 
 function displayUserLists() {
-    var currentUser = JSON.parse(localStorage.getItem("user"));
-    var lists = currentUser.lists || [];
+    const currentUser = new User(JSON.parse(localStorage.getItem("user")));
+    var lists = currentUser.lists;
     var listsContainer = document.getElementById("list-table").getElementsByTagName("tbody")[0];
     clearListContainer(listsContainer);
 
@@ -55,16 +58,11 @@ function addNewList() {
         return;
     }
     
-    var currentUser = JSON.parse(localStorage.getItem("user"));
-    var newList = {
-        id: crypto.randomUUID(),
-        name: listName,
-        functions: [],
-        products: []
-    };
+    var currentUser = new User(localStorage.getItem("user"));
+    var newList = new List(listName);
     
     currentUser.lists.push(newList);
-    updateCurrentUserInLocalStorage(currentUser);
+    updateUserList(currentUser);
 
     var listsContainer = document.getElementById("list-table").getElementsByTagName("tbody")[0];
     var newRow = createListTableRow(newList);
@@ -73,13 +71,13 @@ function addNewList() {
     listNameInput.value = "";
 }
 
-function updateCurrentUserInLocalStorage(user) {
+function updateUserList(newUser) {
     var users = JSON.parse(localStorage.getItem("users"));
-    var updatedUsers = users.map(function(element) {
-        if (element.name === user.name) {
-            element.lists = user.lists;
+    var updatedUsers = users.map(function(user) {
+        if (user.name === newUser.name) {
+            user.lists = newUser.lists;
         }
-        return element;
+        return user;
     });
     localStorage.setItem("users", JSON.stringify(updatedUsers));
 }

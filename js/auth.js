@@ -39,12 +39,12 @@ function handleCadastroFormSubmit(event) {
 function validateCadastroForm(name, email) {
     const listUsers = getUsers();
 
-    if (listUsers.find(u => u.email === email)) {
+    if (listUsers.find(user => user.email === email)) {
         alert('E-mail já cadastrado!');
         return false;
     }
 
-    if (listUsers.find(u => u.name === name)) {
+    if (listUsers.find(user => user.name === name)) {
         alert('Nome de usuário já cadastrado!');
         return false;
     }
@@ -84,7 +84,7 @@ function login() {
 
     if (user) {
         console.log(user);
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", user.toJSON());
         window.location.href = "../pages/dashboard.html";
     } else {
         alert("Login Failed. Please check your username and password.");
