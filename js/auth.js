@@ -1,17 +1,18 @@
 import { User } from './modules/user.js';
 
 document.addEventListener("DOMContentLoaded", function() {
-    var registerPageBtn = document.getElementById('registerPageBtn');
-    registerPageBtn.addEventListener('click', redirectToRegisterPage);
-
-    var loginPageBtn = document.getElementById('loginPageBtn');
-    loginPageBtn.addEventListener('click', redirectToLoginPage);
-
-    var loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', handleLoginFormSubmit);
-
-    var cadastroForm = document.getElementById('cadastroForm');
-    cadastroForm.addEventListener('submit', handleCadastroFormSubmit);
+    if (window.location.pathname.includes('login.html')) {
+        var registerPageBtn = document.getElementById('registerPageBtn');
+        var loginForm = document.getElementById('loginForm');
+        registerPageBtn.addEventListener('click', redirectToRegisterPage);
+        loginForm.addEventListener('submit', handleLoginFormSubmit);
+    } else {
+        var loginPageBtn = document.getElementById('loginPageBtn')
+        var cadastroForm = document.getElementById('cadastroForm');
+        
+        loginPageBtn.addEventListener('click', redirectToLoginPage);
+        cadastroForm.addEventListener('submit', handleCadastroFormSubmit);
+    }
 });
 
 function handleCadastroFormSubmit(event) {
@@ -79,9 +80,10 @@ function login() {
     var password = document.getElementById("password").value;
     
     const users = getUsers();
-    const user = users.find(user => user.email === username && user.pass === password);
+    const user = users.find(user => user.name === username && user.password === password);
 
     if (user) {
+        console.log(user);
         localStorage.setItem("user", JSON.stringify(user));
         window.location.href = "../pages/dashboard.html";
     } else {
