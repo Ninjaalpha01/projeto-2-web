@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+</head>
+<body>
+    <main id="main-login-register">
+        <h1>Login</h1>
+        <form id="loginForm" class="login-register-form" >
+            <div>
+                <label for="username">Username</label>
+                <input id="username" class="fields" type="text" name="username" placeholder="Enter Username">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" class="fields" type="password" name="password" placeholder="Enter Password">
+            </div>
+            <button class="primary-button" type="submit" name="submit">Login</button>
+            <button class="secondary-button" type="button" name="register" id="registerPageBtn">Register</button>
+            <div class="stay-connected">
+                <input id="check" class="check" type="checkbox" name="remember" value="1">
+                <label href="#">Permanecer Conectado</label>
+            </div>
+        </form>
+    </main>
+    <script src="../js/auth.js" type="module"></script>
+</body>
+</html>
