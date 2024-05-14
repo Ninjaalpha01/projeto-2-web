@@ -43,16 +43,6 @@ function clearListContainer(container) {
     container.innerHTML = "";
 }
 
-function createListTableRow(list) {
-    var newRow = document.createElement("tr");
-    newRow.innerHTML = `
-        <td>${list.id}</td>
-        <td>${list.name}</td>
-        <td>Funções</td>
-    `;
-    return newRow;
-}
-
 function addNewList() {
     var listNameInput = document.getElementById("listName");
     var listName = listNameInput.value.trim();
@@ -94,4 +84,20 @@ function logoutUser() {
 
 function redirectToLoginPage() {
     window.location.href = "login.html";
+}
+
+function createListTableRow(list) {
+    var newRow = document.createElement("tr");
+    newRow.innerHTML = `
+        <td>${list.id}</td>
+        <td>${list.name}</td>
+        <td><button class="editBtn">Editar</button></td>
+    `;
+
+    var editBtn = newRow.querySelector(".editBtn");
+    editBtn.addEventListener("click", function() {
+        window.location.href = "editList.html?id=" + list.id;
+    });
+
+    return newRow;
 }

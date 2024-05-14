@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
         cadastroForm.addEventListener('submit', handleCadastroFormSubmit);
     }
 
-    // Verificar se o usuário permaneceu conectado anteriormente
     const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
         window.location.href = "../pages/dashboard.html";
@@ -28,6 +27,12 @@ function handleCadastroFormSubmit(event) {
     const name = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (password !== confirmPassword) {
+        alert('Senhas não conferem!');
+        return;
+    }
 
     if (!validateCadastroForm(name, email)) {
         return;
