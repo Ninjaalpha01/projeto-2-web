@@ -1,28 +1,13 @@
 export class User {
-    constructor(name, email, password) {
+    constructor(name, email, password, lists = []) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.lists = []
+        this.lists = lists;
     }
 
-    constructor(object) {
-        const newUser = fromJSON(object);
-        try {
-            this.email = newUser.email;
-            this.password = newUser.password;
-            this.lists = newUser.lists;
-            this.name = newUser.name;
-        } catch(e) {
-            console.error("Erro ao criar objeto User", e)
-        }
-    }
-
-    toJSON() {
-        return JSON.stringify(this);
-    }
-
-    fromJSON(object) {
-        return JSON.parse(object);
+    static fromJSON(json) {
+        const obj = JSON.parse(json);
+        return new User(obj.name, obj.email, obj.password, obj.lists);
     }
 }

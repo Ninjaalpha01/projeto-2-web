@@ -14,6 +14,10 @@ main {
   box-sizing: border-box;
 }
 
+hr {
+  margin: 20px 0;
+  border: 1px solid #ddd;
+}
 
 #main-login-register {
   width: 100%;
@@ -40,6 +44,10 @@ main {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.stay-connected>label{
+  margin: 0;
 }
 
 .login-register-form .stay-connected {

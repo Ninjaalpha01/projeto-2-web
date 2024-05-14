@@ -1,92 +1,103 @@
-import { User } from "./models/user.js";
-import { List } from "./modules/list.js";
-
 document.addEventListener("DOMContentLoaded", function() {
-    checkIfLoggedInAndRedirect();
-    displayUserLists();
+    if (window.location.pathname.includes('login.html')) {
+        var registerPageBtn = document.getElementById('registerPageBtn');
+        var loginForm = document.getElementById('loginForm');
+        registerPageBtn.addEventListener('click', redirectToRegisterPage);
+        loginForm.addEventListener('submit', handleLoginFormSubmit);
+    } else {
+        var loginPageBtn = document.getElementById('loginPageBtn');
+        var cadastroForm = document.getElementById('cadastroForm');
+        
+        loginPageBtn.addEventListener('click', redirectToLoginPage);
+        cadastroForm.addEventListener('submit', handleCadastroFormSubmit);
+    }
 
-    document.getElementById("addListBtn").addEventListener("click", addNewList);
-    document.getElementById("logoutBtn").addEventListener("click", logoutUser);
+    // Verificar se o usuário permaneceu conectado anteriormente
+    const storedUser = sessionStorage.getItem("user");
+    if (storedUser) {
+        window.location.href = "../pages/dashboard.html";
+    }
 });
 
-function checkIfLoggedInAndRedirect() {
-    const user = new User(JSON.parse(localStorage.getItem("user")));
-    if (!user) {
-        redirectToLoginPage();
-    } else {
-        displayUserName();
-    }
-}
+function handleCadastroFormSubmit(event) {
+    event.preventDefault();
 
-function displayUserName() {
-    const user = new User(JSON.parse(localStorage.getItem("user")));
-    document.getElementById("userName").textContent = user.name;
-}
+    const name = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-function displayUserLists() {
-    const currentUser = new User(JSON.parse(localStorage.getItem("user")));
-    var lists = currentUser.lists;
-    var listsContainer = document.getElementById("list-table").getElementsByTagName("tbody")[0];
-    clearListContainer(listsContainer);
-
-    lists.forEach(function(list) {
-        var newRow = createListTableRow(list);
-        listsContainer.appendChild(newRow);
-    });
-}
-
-function clearListContainer(container) {
-    container.innerHTML = "";
-}
-
-function createListTableRow(list) {
-    var newRow = document.createElement("tr");
-    newRow.innerHTML = `
-        <td>${list.id}</td>
-        <td>${list.name}</td>
-        <td>Funções</td>
-    `;
-    return newRow;
-}
-
-function addNewList() {
-    var listNameInput = document.getElementById("listName");
-    var listName = listNameInput.value.trim();
-    
-    if (listName === "") {
-        alert("Por favor, insira um nome para a lista.");
+    if (!validateCadastroForm(name, email)) {
         return;
     }
-    
-    var currentUser = new User(localStorage.getItem("user"));
-    var newList = new List(listName);
-    
-    currentUser.lists.push(newList);
-    updateUserList(currentUser);
 
-    var listsContainer = document.getElementById("list-table").getElementsByTagName("tbody")[0];
-    var newRow = createListTableRow(newList);
-    listsContainer.appendChild(newRow);
+    const user = new User(name, email, password);
 
-    listNameInput.value = "";
-}
+    addUser(user);
 
-function updateUserList(newUser) {
-    var users = JSON.parse(localStorage.getItem("users"));
-    var updatedUsers = users.map(function(user) {
-        if (user.name === newUser.name) {
-            user.lists = newUser.lists;
-        }
-        return user;
-    });
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-}
+    document.getElementById('cadastroForm').reset();
 
-function logoutUser() {
-    localStorage.removeItem("user");
+    alert('Usuário cadastrado com sucesso!');
     redirectToLoginPage();
 }
 
+function validateCadastroForm(name, email) {
+    const listUsers = getUsers();
+
+    if (listUsers.find(user => user.email === email)) {
+        alert('E-mail já cadastrado!');
+        return false;
+    }
+
+    if (listUsers.find(user => user.name === name)) {
+        alert('Nome de usuário já cadastrado!');
+        return false;
+    }
+
+    return true;
+}
+
+function getUsers() {
+    return JSON.parse(localStorage.getItem('users')) || [];
+}
+
+function addUser(user) {
+    const listUsers = getUsers();
+    listUsers.push(user);
+    localStorage.setItem('users', JSON.stringify(listUsers));
+}
+
 function redirectToLoginPage() {
-    window.location.href = "login.html";
+    window.location.href = 'login.html';
+}
+
+function redirectToRegisterPage() {
+    window.location.href = 'register.html';
+}
+
+function handleLoginFormSubmit(event) {
+    event.preventDefault();
+    login();
+}
+
+function login() {
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    
+    const users = getUsers();
+    const user = users.find(user => user.name === username && user.password === password);
+
+    if (user) {
+        console.log(user);
+        sessionStorage.setItem("user", JSON.stringify(user));
+
+        // Verificar se a opção "Permanecer Conectado" está marcada
+        const rememberCheckbox = document.getElementById("check");
+        if (rememberCheckbox.checked) {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+        
+        window.location.href = "../pages/dashboard.html";
+    } else {
+        alert("Login Failed. Please check your username and password.");
+    }
 }

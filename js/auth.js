@@ -1,5 +1,3 @@
-import { User } from './modules/user.js';
-
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.includes('login.html')) {
         var registerPageBtn = document.getElementById('registerPageBtn');
@@ -7,11 +5,17 @@ document.addEventListener("DOMContentLoaded", function() {
         registerPageBtn.addEventListener('click', redirectToRegisterPage);
         loginForm.addEventListener('submit', handleLoginFormSubmit);
     } else {
-        var loginPageBtn = document.getElementById('loginPageBtn')
+        var loginPageBtn = document.getElementById('loginPageBtn');
         var cadastroForm = document.getElementById('cadastroForm');
         
         loginPageBtn.addEventListener('click', redirectToLoginPage);
         cadastroForm.addEventListener('submit', handleCadastroFormSubmit);
+    }
+
+    // Verificar se o usuário permaneceu conectado anteriormente
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+        window.location.href = "../pages/dashboard.html";
     }
 });
 
@@ -84,7 +88,14 @@ function login() {
 
     if (user) {
         console.log(user);
-        localStorage.setItem("user", user.toJSON());
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // Verificar se a opção "Permanecer Conectado" está marcada
+        const rememberCheckbox = document.getElementById("check");
+        if (rememberCheckbox.checked) {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+        
         window.location.href = "../pages/dashboard.html";
     } else {
         alert("Login Failed. Please check your username and password.");
