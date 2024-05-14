@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function checkIfLoggedInAndRedirect() {
-    const user = User.fromJSON(localStorage.getItem("user"));
+    const user = User.fromJSON(sessionStorage.getItem("user"));
     if (!user) {
         redirectToLoginPage();
     } else {
@@ -19,12 +19,16 @@ function checkIfLoggedInAndRedirect() {
 }
 
 function displayUserName() {
-    const user = User.fromJSON(localStorage.getItem("user"));
+    const user = User.fromJSON(sessionStorage.getItem("user"));
     document.getElementById("userName").textContent = user.name;
 }
 
 function displayUserLists() {
-    const currentUser = User.fromJSON(localStorage.getItem("user"));
+    const currentUser = User.fromJSON(sessionStorage.getItem("user"));
+    if (!currentUser) {
+        return; // Se não houver usuário logado, não há listas para exibir
+    }
+
     var lists = currentUser.lists;
     var listsContainer = document.getElementById("list-table").getElementsByTagName("tbody")[0];
     clearListContainer(listsContainer);
@@ -58,7 +62,7 @@ function addNewList() {
         return;
     }
     
-    var currentUser = User.fromJSON(localStorage.getItem("user"));
+    var currentUser = User.fromJSON(sessionStorage.getItem("user"));
     var newList = new List(listName);
     
 
@@ -84,7 +88,7 @@ function updateUserList(newUser) {
 }
 
 function logoutUser() {
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     redirectToLoginPage();
 }
 

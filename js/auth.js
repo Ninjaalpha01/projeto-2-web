@@ -1,3 +1,6 @@
+import { User } from './modules/user.js';
+import { List } from './modules/list.js';
+
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.includes('login.html')) {
         var registerPageBtn = document.getElementById('registerPageBtn');
