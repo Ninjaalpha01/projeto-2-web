@@ -10,23 +10,19 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function checkIfLoggedInAndRedirect() {
-    const user = User.fromJSON(sessionStorage.getItem("user"));
-    if (!user) {
+    const currentUser = User.fromJSON(sessionStorage.getItem("user"));
+    if (!currentUser) {
         redirectToLoginPage();
+        return null;
     } else {
-        displayUserName();
+        displayUserName(currentUser.name);
+        return currentUser;
     }
 }
 
-function displayUserName() {
-    const user = User.fromJSON(sessionStorage.getItem("user"));
-    document.getElementById("userName").textContent = user.name;
-}
 
 function displayUserLists() {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const currentUser = users.find(user => user.name === User.fromJSON(sessionStorage.getItem("user")).name);
-
+    const currentUser = checkIfLoggedInAndRedirect();
     if (!currentUser) {
         return;
     }
@@ -39,6 +35,23 @@ function displayUserLists() {
         var newRow = createListTableRow(list);
         listsContainer.appendChild(newRow);
     });
+}
+
+
+function updateUserList(newUser) {
+    var users = JSON.parse(localStorage.getItem("users")) || [];
+    var updatedUsers = users.map(function(user) {
+        if (user.name === newUser.name) {
+            user.lists = newUser.lists;
+        }
+        return user;
+    });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    window.location.reload();
+}
+
+function displayUserName(userName) {
+    document.getElementById("userName").textContent = userName;
 }
 
 function clearListContainer(container) {
@@ -65,18 +78,6 @@ function addNewList() {
     listsContainer.appendChild(newRow);
 
     listNameInput.value = "";
-}
-
-function updateUserList(newUser) {
-    var users = JSON.parse(localStorage.getItem("users")) || [];
-    var updatedUsers = users.map(function(user) {
-        if (user.name === newUser.name) {
-            user.lists = newUser.lists;
-        }
-        return user;
-    });
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    displayUserLists();
 }
 
 function logoutUser() {
