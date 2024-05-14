@@ -4,6 +4,7 @@ export class List {
         this.name = name;
         this.items = [];
         this.functions = [];
+        this.createdAt = new Date();
     }
 
     static fromJSON(json) {

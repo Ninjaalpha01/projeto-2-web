@@ -10,23 +10,22 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function checkIfLoggedInAndRedirect() {
-    const user = User.fromJSON(sessionStorage.getItem("user"));
-    if (!user) {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const currentUser = users.find(user => user.name === User.fromJSON(sessionStorage.getItem("user")).name);
+
+    if (!currentUser) {
         redirectToLoginPage();
     } else {
         displayUserName();
     }
 }
 
-function displayUserName() {
-    const user = User.fromJSON(sessionStorage.getItem("user"));
-    document.getElementById("userName").textContent = user.name;
-}
-
 function displayUserLists() {
-    const currentUser = User.fromJSON(sessionStorage.getItem("user"));
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const currentUser = users.find(user => user.name === User.fromJSON(sessionStorage.getItem("user")).name);
+
     if (!currentUser) {
-        return; // Se não houver usuário logado, não há listas para exibir
+        return;
     }
 
     var lists = currentUser.lists;
@@ -38,6 +37,19 @@ function displayUserLists() {
         listsContainer.appendChild(newRow);
     });
 }
+
+function updateUserList(newUser) {
+    var users = JSON.parse(localStorage.getItem("users")) || [];
+    var updatedUsers = users.map(function(user) {
+        if (user.name === newUser.name) {
+            user.lists = newUser.lists;
+        }
+        return user;
+    });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    displayUserLists();
+}
+
 
 function clearListContainer(container) {
     container.innerHTML = "";
@@ -54,7 +66,6 @@ function addNewList() {
     
     var currentUser = User.fromJSON(sessionStorage.getItem("user"));
     var newList = new List(listName);
-    
 
     currentUser.lists.push(newList);
     updateUserList(currentUser);
@@ -64,17 +75,6 @@ function addNewList() {
     listsContainer.appendChild(newRow);
 
     listNameInput.value = "";
-}
-
-function updateUserList(newUser) {
-    var users = JSON.parse(localStorage.getItem("users")) || [];
-    var updatedUsers = users.map(function(user) {
-        if (user.name === newUser.name) {
-            user.lists = newUser.lists;
-        }
-        return user;
-    });
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
 }
 
 function logoutUser() {
@@ -91,13 +91,43 @@ function createListTableRow(list) {
     newRow.innerHTML = `
         <td>${list.id}</td>
         <td>${list.name}</td>
-        <td><button class="editBtn">Editar</button></td>
+        <td>${formatDate(list.createdAt)}</td>
+        <td><button class="editBtn">Editar</button><button class="deleteBtn">Excluir</button></td>
     `;
 
     var editBtn = newRow.querySelector(".editBtn");
     editBtn.addEventListener("click", function() {
-        window.location.href = "editList.html?id=" + list.id;
+        window.location.href = "list.html?id=" + list.id;
     });
 
+    var deleteBtn = newRow.querySelector(".deleteBtn");
+    deleteBtn.addEventListener("click", function() {
+        deleteList(list.id);
+    });
+
+    deleteBtn.style.backgroundColor = "red";
+
     return newRow;
+}
+
+function deleteList(listId) {
+    var currentUser = User.fromJSON(sessionStorage.getItem("user"));
+    var updatedLists = currentUser.lists.filter(function(l) {
+        return l.id !== listId;
+    });
+    currentUser.lists = updatedLists;
+    updateUserList(currentUser);
+}
+
+function formatDate(date) {
+    if (typeof date === "string") {
+        date = new Date(date);
+    }
+
+    var formattedDate = `${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())} - ${addLeadingZero(date.getDate())}/${addLeadingZero(date.getMonth() + 1)}/${date.getFullYear()}`;
+    return formattedDate;
+}
+
+function addLeadingZero(number) {
+    return number < 10 ? "0" + number : number;
 }

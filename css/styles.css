@@ -97,17 +97,26 @@ hr {
   width: 85%;
   border-collapse: collapse;
   margin-top: 20px;
+  background-color: #fff;
 }
 
 #list-table :where(th, td) {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px;
   text-align: left;
 }
 
 #list-table th {
-  background-color: #f2f2f2;
+  background-color: #3977b1;
+  color: white;
   font-weight: bold;
+}
+
+#list-table tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#list-table tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
 #list-table tr:hover {
@@ -132,4 +141,43 @@ hr {
 
 #list-table button + button {
   margin-left: 6px;
+}
+
+/* Estilos para a coluna de "Id" */
+#list-table td:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Estilos para a coluna de "Nome" */
+#list-table td:nth-child(2) {
+  width: 150px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Estilos para a coluna de "Data de Criação" */
+#list-table td:nth-child(3) {
+  width: 200px; /* Defina a largura conforme necessário */
+}
+
+/* Estilo para os botões de ação */
+#list-table button.action-btn {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* Estilo específico para o botão de exclusão */
+#list-table button.delete-btn {
+  background-color: #ff4d4d;
+}
+
+/* Estilo para os botões quando o mouse passa sobre eles */
+#list-table button:hover {
+  background-color: #3e8e41;
+}
+
+/* Estilo para os botões de ação quando o mouse passa sobre eles */
+#list-table button.action-btn:hover {
+  background-color: #ff3333;
 }
