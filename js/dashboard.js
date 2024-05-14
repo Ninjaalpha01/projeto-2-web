@@ -20,14 +20,15 @@ function checkIfLoggedInAndRedirect() {
     }
 }
 
-
-function displayUserLists() {
-    const currentUser = checkIfLoggedInAndRedirect();
-    if (!currentUser) {
-        return;
+function displayUserLists(lists = []) {
+    if (lists.length === 0) {
+        const currentUser = checkIfLoggedInAndRedirect();
+        if (!currentUser) {
+            return;
+        }
+        var lists = currentUser.lists;
     }
 
-    var lists = currentUser.lists;
     var listsContainer = document.getElementById("list-table").getElementsByTagName("tbody")[0];
     clearListContainer(listsContainer);
 
@@ -36,7 +37,6 @@ function displayUserLists() {
         listsContainer.appendChild(newRow);
     });
 }
-
 
 function updateUserList(newUser) {
     var users = JSON.parse(localStorage.getItem("users")) || [];
@@ -47,7 +47,7 @@ function updateUserList(newUser) {
         return user;
     });
     localStorage.setItem("users", JSON.stringify(updatedUsers));
-    window.location.reload();
+    sessionStorage.setItem("user", JSON.stringify(newUser));
 }
 
 function displayUserName(userName) {
@@ -91,6 +91,7 @@ function redirectToLoginPage() {
 
 function createListTableRow(list) {
     var newRow = document.createElement("tr");
+    newRow.id = list.id;
     newRow.innerHTML = `
         <td>${list.id}</td>
         <td>${list.name}</td>
@@ -120,6 +121,9 @@ function deleteList(listId) {
     });
     currentUser.lists = updatedLists;
     updateUserList(currentUser);
+
+    var row = document.getElementById(listId);
+    row.remove();
 }
 
 function formatDate(date) {
@@ -127,7 +131,8 @@ function formatDate(date) {
         date = new Date(date);
     }
 
-    var formattedDate = `${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())} - ${addLeadingZero(date.getDate())}/${addLeadingZero(date.getMonth() + 1)}/${date.getFullYear()}`;
+    var formattedDate = `${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())} - 
+            ${addLeadingZero(date.getDate())}/${addLeadingZero(date.getMonth() + 1)}/${date.getFullYear()}`;
     return formattedDate;
 }
 
