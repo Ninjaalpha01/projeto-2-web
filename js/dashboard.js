@@ -10,14 +10,17 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function checkIfLoggedInAndRedirect() {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const currentUser = users.find(user => user.name === User.fromJSON(sessionStorage.getItem("user")).name);
-
-    if (!currentUser) {
+    const user = User.fromJSON(sessionStorage.getItem("user"));
+    if (!user) {
         redirectToLoginPage();
     } else {
         displayUserName();
     }
+}
+
+function displayUserName() {
+    const user = User.fromJSON(sessionStorage.getItem("user"));
+    document.getElementById("userName").textContent = user.name;
 }
 
 function displayUserLists() {
@@ -37,19 +40,6 @@ function displayUserLists() {
         listsContainer.appendChild(newRow);
     });
 }
-
-function updateUserList(newUser) {
-    var users = JSON.parse(localStorage.getItem("users")) || [];
-    var updatedUsers = users.map(function(user) {
-        if (user.name === newUser.name) {
-            user.lists = newUser.lists;
-        }
-        return user;
-    });
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    displayUserLists();
-}
-
 
 function clearListContainer(container) {
     container.innerHTML = "";
@@ -75,6 +65,18 @@ function addNewList() {
     listsContainer.appendChild(newRow);
 
     listNameInput.value = "";
+}
+
+function updateUserList(newUser) {
+    var users = JSON.parse(localStorage.getItem("users")) || [];
+    var updatedUsers = users.map(function(user) {
+        if (user.name === newUser.name) {
+            user.lists = newUser.lists;
+        }
+        return user;
+    });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    displayUserLists();
 }
 
 function logoutUser() {
