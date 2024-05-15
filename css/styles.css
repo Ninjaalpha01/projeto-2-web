@@ -1,96 +1,122 @@
+
 body {
   height: 100vh;
   width: 100vw;
   margin: 0;
-  background-color: #f1f1f1;
+  background-color: blueviolet;
 }
 
 main {
-  height: auto;
-  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
 }
-
+h1, h2 {
+  font-family: Arial, sans-serif;
+  font-size: 40px;
+  text-align: center;
+  color: black;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  border: 4px solid #000;
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
 hr {
   margin: 20px 0;
   border: 1px solid #ddd;
 }
 
 #main-login-register {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 .login-register-form {
   display: flex;
   flex-direction: column;
   width: 30%;
-  row-gap: 40px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  row-gap: 20px; 
 }
 
 .login-register-form label {
-  margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  font-weight: bold; 
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  text-align: center;
+  color: black;
+  text-transform: uppercase;
+  padding: 2px 4px;
+  background-color: #fff;
 }
 
-.login-register-form div {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+.login-register-form div,
 
-.stay-connected>label{
-  margin: 0;
-}
-
-.login-register-form .stay-connected {
-  display: flex;
+.stay-connected {
   flex-direction: row;
-  justify-content: center;
-  column-gap: 10px;
   align-items: center;
+  column-gap: 10px;
+}
+.stay-connected input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  justify-content: flex-start;
+}
+.stay-connected label {
+  font-size: Arial, sans-serif;
+  font-weight: bold;
+  color: black;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .fields {
   height: 30px;
-  border: none;
+  border: 1px solid blueviolet;
   padding: 10px;
   border-radius: 5px;
   font-size: 16px;
 }
 
-.primary-button {
-  background-color: #3977b1;
-  color: white;
+.primary-button,
+.secondary-button {
   border: none;
   border-radius: 5px;
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
+}
+
+.primary-button {
+  background-color: #f1f1f1;
+  color: blueviolet;
+  border: 1px solid blueviolet;
 }
 
 .secondary-button {
   background-color: #f1f1f1;
-  color: #3977b1;
-  border: none;
-  border: 1px solid #3977b1;
-  border-radius: 5px;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
+  color: blueviolet;
+  border: 1px solid blueviolet;
 }
 
 #lists {
   display: flex;
   flex-direction: column;
-  align-items: center;  
+  align-items: center;
 }
 
 #list-table {
@@ -100,7 +126,8 @@ hr {
   background-color: #fff;
 }
 
-#list-table :where(th, td) {
+#list-table th,
+#list-table td {
   padding: 12px;
   text-align: left;
 }
@@ -143,41 +170,35 @@ hr {
   margin-left: 6px;
 }
 
-/* Estilos para a coluna de "Id" */
+/* Estilos específicos para colunas */
 #list-table td:first-child {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Estilos para a coluna de "Nome" */
 #list-table td:nth-child(2) {
   width: 150px;
   font-weight: bold;
   font-size: 20px;
 }
 
-/* Estilos para a coluna de "Data de Criação" */
 #list-table td:nth-child(3) {
-  width: 200px; /* Defina a largura conforme necessário */
+  width: 200px;
 }
 
-/* Estilo para os botões de ação */
+/* Estilos para botões de ação */
 #list-table button.action-btn {
   padding: 8px 12px;
   font-size: 14px;
 }
 
-/* Estilo específico para o botão de exclusão */
 #list-table button.delete-btn {
   background-color: #ff4d4d;
 }
 
-/* Estilo para os botões quando o mouse passa sobre eles */
-#list-table button:hover {
-  background-color: #3e8e41;
-}
-
-/* Estilo para os botões de ação quando o mouse passa sobre eles */
 #list-table button.action-btn:hover {
   background-color: #ff3333;
 }
+
+
+
