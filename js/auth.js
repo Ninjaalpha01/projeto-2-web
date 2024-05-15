@@ -95,10 +95,8 @@ function login() {
     const user = users.find(user => user.name === username && user.password === password);
 
     if (user) {
-        console.log(user);
         sessionStorage.setItem("user", JSON.stringify(user));
-
-        // Verificar se a opção "Permanecer Conectado" está marcada
+        
         const rememberCheckbox = document.getElementById("check");
         if (rememberCheckbox.checked) {
             localStorage.setItem("user", JSON.stringify(user));

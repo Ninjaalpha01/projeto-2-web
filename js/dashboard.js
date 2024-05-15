@@ -82,6 +82,7 @@ function addNewList() {
 
 function logoutUser() {
     sessionStorage.removeItem("user");
+    localStorage.removeItem("users");
     redirectToLoginPage();
 }
 
