@@ -9,19 +9,19 @@
         <h1>Login</h1>
         <form id="loginForm" class="login-register-form" >
             <div>
-                <label for="username">Username</label>
+                <label for="username">Username:</label>
                 <input id="username" class="fields" type="text" name="username" placeholder="Enter Username">
             </div>
             <div>
-                <label for="password">Password</label>
+                <label for="password">Password:</label>
                 <input id="password" class="fields" type="password" name="password" placeholder="Enter Password">
+            </div>
+            <div class="stay-connected">
+                <label for="check">Permanecer Conectado</label>
+                <input id="check" class="check" type="checkbox" name="remember" value="1">
             </div>
             <button class="primary-button" type="submit" name="submit">Entrar</button>
             <button class="secondary-button" type="button" name="register" id="registerPageBtn">Cadastrar</button>
-            <div class="stay-connected">
-                <input id="check" class="check" type="checkbox" name="remember" value="1">
-                <label href="#">Permanecer Conectado</label>
-            </div>
         </form>
     </main>
     <script src="../js/auth.js" type="module"></script>
